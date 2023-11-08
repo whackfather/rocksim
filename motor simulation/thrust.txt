@@ -1,4 +1,5 @@
-Example of simulated thrust curve. These numbers are from the current version of motormathmodel_v1.py
+EXAMPLE of simulated thrust curve. These numbers are from the current version of motormathmodel_v1.py.
+All values are in newtons and are iterated for every 0.01 seconds of flight.
 7000.1064
 7000.3017
 7000.3614
