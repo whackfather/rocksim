@@ -14,12 +14,12 @@ rad_port = 0.063  # m
 a_port = pi * (rad_port ** 2)  # m^2
 isp = 180  # s
 grav = 9.81  # m/s^2
-mdot_ox = (thrust_avg / (isp * grav)) / (1 + (1 / 6.5))
-hgt_fu = 1.07553898867
-rho_fu = (0.871 * 901) + (0.129 * 1220)
-burn_time = 13.99
-a = 0.417
-n = 0.347
+mdot_ox = (thrust_avg / (isp * grav)) / (1 + (1 / 6.5))  # kg/s
+hgt_fu = 1.07553898867  # m
+rho_fu = (0.871 * 901) + (0.129 * 1220)  # kg/m^3
+burn_time = 13.99  # s
+a = 0.417  # const
+n = 0.347  # const
 
 # Setting up variables
 t_cur = 0
@@ -73,4 +73,3 @@ while True:
 		print("Simulation complete.")
 		print("Check thrust.txt to verify thrust curve.")
 		exit(0)
-
