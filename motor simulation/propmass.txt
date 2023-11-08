@@ -1,5 +1,5 @@
 EXAMPLE of simulated propellant mass over time. These numbers are from the current version of motormathmodel_v2.py.
-All values are in newtons and are iterated for every 0.01 seconds of flight for the duration of the motor burn.
+All values are in kilograms and are iterated for every 0.01 seconds of flight for the duration of the motor burn.
 This file is ~1400 lines long. DO NOT SCROLL TO THE END, it'll be a waste of your time.
 63.9396
 63.9
