@@ -1,1 +1,1 @@
-
+Example of simulated thrust curve. These numbers are directly from motormathmodel_v1.py
