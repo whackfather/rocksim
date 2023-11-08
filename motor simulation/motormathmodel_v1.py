@@ -1,5 +1,5 @@
 # Flight Profile of a Rocket
-# Motor Math Model v1.1
+# Motor Math Model v1
 
 # Importing necessary libraries
 from math import pi
