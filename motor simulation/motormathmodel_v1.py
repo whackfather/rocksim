@@ -1,5 +1,5 @@
 # Flight Profile of a Rocket
-# Motor Math Model v1
+# Motor Math Model v2
 
 # Importing necessary libraries
 from math import pi
@@ -45,6 +45,10 @@ f = open("thrust.txt", "w")
 f.write(str(round(thrust, 4)))
 f.write("\n")
 f.close()
+f = open("propmass.txt", "w")
+f.write(str(round(prop_mass, 4)))
+f.write("\n")
+f.close()
 
 # Main loop
 while True:
@@ -58,8 +62,14 @@ while True:
 	port_area = pi * (port_radius ** 2)
 	surface_area = 2 * pi * port_radius * hgt_fu
 	fuel_mdot = rho_fu * surface_area * (reg_rate / 1000)
-	fuel_mass = mass_fu - (fuel_mdot * t_cur)
-	ox_mass = mass_ox - (mdot_ox * t_cur)
+	if mass_fu - (fuel_mdot * t_cur) > fuel_mass:
+		fuel_mass = fuel_mass
+	else:
+		fuel_mass = mass_fu - (fuel_mdot * t_cur)
+	if mass_ox - (mdot_ox * t_cur) < 0:
+		ox_mass = 0
+	else:
+		ox_mass = mass_ox - (mdot_ox * t_cur)
 	prop_mass = fuel_mass + ox_mass
 	if t_cur < (mass_ox / mdot_ox):
 		thrust = (mdot_ox + fuel_mdot) * isp * grav
@@ -69,7 +79,11 @@ while True:
 	f.write(str(round(thrust, 4)))
 	f.write("\n")
 	f.close()
+	f = open("propmass.txt", "a")
+	f.write(str(round(prop_mass, 4)))
+	f.write("\n")
+	f.close()
 	if t_cur >= 13.99:
 		print("Simulation complete.")
-		print("Check thrust.txt to verify thrust curve.")
+		print("Check thrust.txt and propmass.txt to verify calculations.")
 		exit(0)
