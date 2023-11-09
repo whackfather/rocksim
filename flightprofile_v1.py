@@ -1,77 +1,51 @@
 # Flight Profile of a Rocket
-# v1.1
+# FP v2
 
 # Importing necessary libraries
 import math
 
 # Setting up initials
-t_init = 0  # Don't change this
-t_step = 0.01  # s
-hgt_init = 1  # m
-cht_dply = 500  # m
-v_init = 0  # m/s
-grav = -9.81  # m/s^2
-mass = 6.9  # kg
-cd_rkt = 0.3  # coef
-cd_cht = 2.3  # coef
-cht_diam = 1.829  # m
-drogue_diam = 0.203  # m
-rkt_diam = 0.102  # m
-pi = math.pi  # const
-cs_rkt = pi * ((rkt_diam / 2) ** 2)  # m^2
-cs_cht = pi * ((cht_diam / 2) ** 2)  # m^2
-cs_drg = pi * ((drogue_diam / 2) ** 2)  # m^2
-weight = grav * mass  # N
-air_den = 1.225  # kg/m^3
-alt_lst = []
-vel_lst = []
-tim_lst = []
+mass_wet = 136
+coef_drag = 0.373
+cs_area = 0.0366
+mass_dry = 80.531
+area_reef = 7.331519195
+area_main = 15.10334678
+cht_cd = 2.2
+dply_main = 400
+lnch_alt = 1219
+hgt_rail = 13.1064
+temp_init = 34
+t_step = 0.01
 
 # Setting up variables
-t_cur = t_init
-v_cur = v_init
-hgt_cur = hgt_init
-ac_cur = grav
+line = 0
+t_cur = 0
+altitude = 0
+velocity = 0
+accel = -9.81
+f = open("propmass.txt")
+propcont = f.readlines()
+prop_mass = propcont[line]
+f.close()
+mass_cur = float(prop_mass) + mass_dry
+weight = mass_cur * 9.81
+drag = 0
+f = open("thrust.txt")
+thrucont = f.readlines()
+thrust = thrucont[line]
+f.close()
+sum_force = float(thrust) - weight - drag
+hgt_asl = lnch_alt + altitude
+if hgt_asl < 11000:
+	temp = -0.0092485 * hgt_asl + (temp_init + 11.2734)
+else:
+	temp = -56.46
+if hgt_asl < 11000:
+	air_pres = 101.29 * ((temp + 273.1) / 288.08)
+else:
+	air_pres = 22.65 * math.exp(1.73-(0.000157*hgt_asl))
 
-# Main calculations loop
-while True:
-	# Defining chute drag
-	if hgt_cur <= cht_dply and t_cur > 10:
-		f_drag = (0.5 * air_den * -v_cur * abs(v_cur) * cd_cht * cs_cht)
-	elif v_cur < 0:
-		f_drag = (0.5 * air_den * -v_cur * abs(v_cur) * cd_cht * cs_drg)
-	elif hgt_cur > cht_dply or t_cur < 10:
-		f_drag = (0.5 * air_den * -v_cur * abs(v_cur) * cd_rkt * cs_rkt)
 
-	# Progressing time
-	t_cur += t_step
-
-	# Defining thrust and its duration
-	if t_cur < 5.5:
-		f_thrust = 550
-	else:
-		f_thrust = 0
-
-	# Calculating updated values
-	f_net = f_thrust + weight + f_drag
-	ac_fut = f_net / mass
-	ac_act = (ac_cur + ac_fut) / 2
-	ac_cur = ac_fut
-	hgt_cur += (v_cur * t_step) + (0.5 * ac_act * t_step * t_step)
-	v_cur += ac_act * t_step
-
-	# Defining stopping condition or printing values
-	if hgt_cur < 0:
-		alt_lst.sort()
-		vel_lst.sort()
-		print("Max Altitude: " + str(round(alt_lst[-1], 3)) + " m")
-		print("Max Velocity: " + str(round(vel_lst[-1], 3)) + " m/s")
-		print("Time to Apogee: " + str(round(tim_lst[-1], 3)) + " s")
-		print("Time in Flight: " + str(round(t_cur, 3)) + " s")
-		print("Simulation complete.")
-		exit(0)
-	else:
-		alt_lst.append(hgt_cur)
-		vel_lst.append(v_cur)
-		if abs(v_cur)/v_cur == 1:
-			tim_lst.append(t_cur)
+print(prop_mass)
+print(thrust)
