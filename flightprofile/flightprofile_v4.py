@@ -7,18 +7,18 @@ import math
 # Fluff
 print("Loading...")
 
-# Setting up initials
-coef_drag = 0.373  # coef
-cs_area = 0.0366  # m^2
-mass_dry = 54.638  # kg
-area_reef = 0.7974732057  # m^2
-area_main = 15.10334678  # m^2
-cht_cd = 2.2  # const
-dply_main = 400  # m
-lnch_alt = 1219  # m
-hgt_rail = 13.1064  # m
-temp_init = 34  # C
-t_step = 0.01  # s
+# Setting up initials. Enter custom values to match your rocket.
+coef_drag = 0.373  # coef   drag coefficient of the rocket
+cs_area = 0.0366  # m^2   cross-sectional area of the rocket
+mass_dry = 54.638  # kg   dry mass of the rocket
+area_reef = 0.7974732057  # m^2   area of reefed or drogue chute
+area_main = 15.10334678  # m^2   area of main chute
+cht_cd = 2.2  # coef   drag coefficient of the chutes
+dply_main = 400  # m   main chute deployment altitude
+lnch_alt = 1219  # m   altitude asl of launch site
+hgt_rail = 13.1064  # m   height of the launch rail (not yet implemented)
+temp_init = 34  # C   assumed initial temperature of the launch site
+t_step = 0.01  # s   desired timestep of calculations
 alt_lst = []
 
 # Setting up first line
@@ -50,6 +50,7 @@ else:
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
+# Replace this elif chain with your desired method of calculating your changing drag coefficient.
 if mach_n < 0.09:
 	Cd = (-0.879762 * mach_n) + 0.393714
 elif 0.09 <= mach_n < 0.12:
@@ -212,6 +213,7 @@ while True:
 	else:
 		Cd = (-0.0815523 * mach_n) + 0.477042
 	g_load = abs(accel) / 9.81
+	# Define your stopping condition here. Currently set to stop at apogee.
 	if velocity < 0:
 		alt_lst.sort()
 		print("Max altitude: " + str(round(alt_lst[-1], 3)) + " m")
