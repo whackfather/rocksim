@@ -1,5 +1,5 @@
 # Flight Profile of a Rocket
-# FP v4
+# FP v5
 
 # Importing necessary libraries
 import math
@@ -7,18 +7,18 @@ import math
 # Fluff
 print("Loading...")
 
-# Setting up initials. Enter custom values to match your rocket.
-coef_drag = 0.373  # coef   drag coefficient of the rocket
-cs_area = 0.0366  # m^2   cross-sectional area of the rocket
-mass_dry = 54.638  # kg   dry mass of the rocket
-area_reef = 0.7974732057  # m^2   area of reefed or drogue chute
-area_main = 15.10334678  # m^2   area of main chute
-cht_cd = 2.2  # coef   drag coefficient of the chutes
-dply_main = 400  # m   main chute deployment altitude
-lnch_alt = 1219  # m   altitude asl of launch site
-hgt_rail = 13.1064  # m   height of the launch rail (not yet implemented)
-temp_init = 34  # C   assumed initial temperature of the launch site
-t_step = 0.01  # s   desired timestep of calculations
+# Setting up initials
+coef_drag = 0.373
+cs_area = 0.0366
+mass_dry = 54.638
+area_reef = 0.7974732057
+area_main = 15.10334678
+cht_cd = 2.2
+dply_main = 400
+lnch_alt = 1219
+hgt_rail = 13.1064
+temp_init = 34
+t_step = 0.01
 alt_lst = []
 
 # Setting up first line
@@ -50,35 +50,18 @@ else:
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
-# Replace this elif chain with your desired method of calculating your changing drag coefficient.
-if mach_n < 0.09:
-	Cd = (-0.879762 * mach_n) + 0.393714
-elif 0.09 <= mach_n < 0.12:
-	Cd = 0.327
-elif 0.12 <= mach_n < 0.38:
-	Cd = (-0.0952479 * mach_n) + 0.33672
-elif 0.38 <= mach_n < 0.56:
-	Cd = (-0.0513932 * mach_n) + 0.321231
-elif 0.56 <= mach_n < 0.62:
-	Cd = 0.293
-elif 0.62 <= mach_n < 0.91:
-	Cd = (0.0260591 * mach_n) + 0.277505
-elif 0.91 <= mach_n < 1.06:
+if mach_n < 0.01137:
+	Cd = 0.385
+elif 0.01137 <= mach_n < 0.3374:
+	Cd = 0.282383 * (mach_n ** -0.0692443)
+elif 0.3374 <= mach_n < 0.9183:
+	Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
+elif 0.9183 <= mach_n < 1.05:
 	Cd = (0.809643 * mach_n) - 0.434983
-elif 1.06 <= mach_n < 1.12:
-	Cd = (-0.06 * mach_n) + 0.477267
-elif 1.12 <= mach_n < 1.23:
-	Cd = 0.41
-elif 1.23 <= mach_n < 1.41:
-	Cd = (0.435648 * (mach_n ** 2)) - (1.01596 * mach_n) + 1.00167
-elif 1.41 <= mach_n < 1.61:
-	Cd = (-0.218947 * mach_n) + 0.744616
-elif 1.61 <= mach_n < 2.01:
-	Cd = (-0.164103 * mach_n) + 0.655777
-elif 2.01 <= mach_n < 2.47:
-	Cd = (-0.111765 * mach_n) + 0.551169
+elif 1.05 <= mach_n < 1.4164:
+	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308
 else:
-	Cd = (-0.0815523 * mach_n) + 0.477042
+	Cd = 0.581068 * (mach_n ** -0.822537)
 g_load = abs(accel) / 9.81
 
 # Setting up second line
@@ -112,34 +95,18 @@ else:
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
-if mach_n < 0.09:
-	Cd = (-0.879762 * mach_n) + 0.393714
-elif 0.09 <= mach_n < 0.12:
-	Cd = 0.327
-elif 0.12 <= mach_n < 0.38:
-	Cd = (-0.0952479 * mach_n) + 0.33672
-elif 0.38 <= mach_n < 0.56:
-	Cd = (-0.0513932 * mach_n) + 0.321231
-elif 0.56 <= mach_n < 0.62:
-	Cd = 0.293
-elif 0.62 <= mach_n < 0.91:
-	Cd = (0.0260591 * mach_n) + 0.277505
-elif 0.91 <= mach_n < 1.06:
+if mach_n < 0.01137:
+	Cd = 0.385
+elif 0.01137 <= mach_n < 0.3374:
+	Cd = 0.282383 * (mach_n ** -0.0692443)
+elif 0.3374 <= mach_n < 0.9183:
+	Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
+elif 0.9183 <= mach_n < 1.05:
 	Cd = (0.809643 * mach_n) - 0.434983
-elif 1.06 <= mach_n < 1.12:
-	Cd = (-0.06 * mach_n) + 0.477267
-elif 1.12 <= mach_n < 1.23:
-	Cd = 0.41
-elif 1.23 <= mach_n < 1.41:
-	Cd = (0.435648 * (mach_n ** 2)) - (1.01596 * mach_n) + 1.00167
-elif 1.41 <= mach_n < 1.61:
-	Cd = (-0.218947 * mach_n) + 0.744616
-elif 1.61 <= mach_n < 2.01:
-	Cd = (-0.164103 * mach_n) + 0.655777
-elif 2.01 <= mach_n < 2.47:
-	Cd = (-0.111765 * mach_n) + 0.551169
+elif 1.05 <= mach_n < 1.4164:
+	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308
 else:
-	Cd = (-0.0815523 * mach_n) + 0.477042
+	Cd = 0.581068 * (mach_n ** -0.822537)
 g_load = abs(accel) / 9.81
 
 # Main loop, lines 3 and beyond
@@ -184,36 +151,19 @@ while True:
 	air_den = air_pres / (0.2869 * (air_temp + 273.1))
 	spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 	mach_n = abs(velocity / spd_snd)
-	if mach_n < 0.09:
-		Cd = (-0.879762 * mach_n) + 0.393714
-	elif 0.09 <= mach_n < 0.12:
-		Cd = 0.327
-	elif 0.12 <= mach_n < 0.38:
-		Cd = (-0.0952479 * mach_n) + 0.33672
-	elif 0.38 <= mach_n < 0.56:
-		Cd = (-0.0513932 * mach_n) + 0.321231
-	elif 0.56 <= mach_n < 0.62:
-		Cd = 0.293
-	elif 0.62 <= mach_n < 0.91:
-		Cd = (0.0260591 * mach_n) + 0.277505
-	elif 0.91 <= mach_n < 1.06:
+	if mach_n < 0.01137:
+		Cd = 0.385
+	elif 0.01137 <= mach_n < 0.3374:
+		Cd = 0.282383 * (mach_n ** -0.0692443)
+	elif 0.3374 <= mach_n < 0.9183:
+		Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
+	elif 0.9183 <= mach_n < 1.05:
 		Cd = (0.809643 * mach_n) - 0.434983
-	elif 1.06 <= mach_n < 1.12:
-		Cd = (-0.06 * mach_n) + 0.477267
-	elif 1.12 <= mach_n < 1.23:
-		Cd = 0.41
-	elif 1.23 <= mach_n < 1.41:
-		Cd = (0.435648 * (mach_n ** 2)) - (1.01596 * mach_n) + 1.00167
-	elif 1.41 <= mach_n < 1.61:
-		Cd = (-0.218947 * mach_n) + 0.744616
-	elif 1.61 <= mach_n < 2.01:
-		Cd = (-0.164103 * mach_n) + 0.655777
-	elif 2.01 <= mach_n < 2.47:
-		Cd = (-0.111765 * mach_n) + 0.551169
+	elif 1.05 <= mach_n < 1.4164:
+		Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308
 	else:
-		Cd = (-0.0815523 * mach_n) + 0.477042
+		Cd = 0.581068 * (mach_n ** -0.822537)
 	g_load = abs(accel) / 9.81
-	# Define your stopping condition here. Currently set to stop at apogee.
 	if velocity < 0:
 		alt_lst.sort()
 		print("Max altitude: " + str(round(alt_lst[-1], 3)) + " m")
