@@ -42,11 +42,11 @@ else:
 
 # Writing first thrust line
 f = open("thrust.txt", "w")
-f.write(thrust)
+f.write(str(thrust))
 f.write("\n")
 f.close()
 f = open("propmass.txt", "w")
-f.write(prop_mass)
+f.write(str(prop_mass))
 f.write("\n")
 f.close()
 
@@ -76,11 +76,11 @@ while True:
 	else:
 		thrust = 0
 	f = open("thrust.txt", "a")
-	f.write(thrust)
+	f.write(str(thrust))
 	f.write("\n")
 	f.close()
 	f = open("propmass.txt", "a")
-	f.write(prop_mass)
+	f.write(str(prop_mass))
 	f.write("\n")
 	f.close()
 	if t_cur >= 13.99:
