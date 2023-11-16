@@ -1,12 +1,12 @@
 # Flight Profile of a Rocket
-# Motor Math Model v2
+# Motor Math Model v3
 
 # Importing necessary libraries
 from math import pi
 
 # Setting up initials
 t_step = 0.01  # s
-mass_ox = 48.07333124  # kg
+mass_ox = 52.07333124  # kg
 mass_fu = 15.8663  # kg
 p_tank = 5516000  # pa
 thrust_avg = 7000  # N
@@ -83,7 +83,8 @@ while True:
 	f.write(str(prop_mass))
 	f.write("\n")
 	f.close()
-	if t_cur >= 13.99:
+	if t_cur > mass_ox / mdot_ox:
 		print("Simulation complete.")
 		print("Check thrust.txt and propmass.txt to verify calculations.")
+		print("Check thrust.txt for the final line number (important for use in main program.")
 		exit(0)
