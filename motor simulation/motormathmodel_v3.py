@@ -86,5 +86,5 @@ while True:
 	if t_cur > mass_ox / mdot_ox:
 		print("Simulation complete.")
 		print("Check thrust.txt and propmass.txt to verify calculations.")
-		print("Check thrust.txt for the final line number (important for use in main program.")
+		print("Check thrust.txt for the final line number (important for use in main program).")
 		exit(0)
