@@ -20,6 +20,8 @@ hgt_rail = 13.1064
 temp_init = 34
 t_step = 0.01
 alt_lst = []
+vel_lst = []
+mach_lst = []
 
 # Setting up first line
 line = 0
@@ -27,6 +29,7 @@ t_cur = 0
 altitude = 0
 alt_lst.append(altitude)
 velocity = 0
+vel_lst.append(velocity)
 accel = -9.81
 f = open("propmass.txt")
 propcont = f.readlines()
@@ -50,6 +53,7 @@ else:
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
+mach_lst.append(mach_n)
 if mach_n < 0.01137:
 	Cd = 0.385
 elif 0.01137 <= mach_n < 0.3374:
@@ -57,11 +61,11 @@ elif 0.01137 <= mach_n < 0.3374:
 elif 0.3374 <= mach_n < 0.9183:
 	Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
 elif 0.9183 <= mach_n < 1.05:
-	Cd = (0.809643 * mach_n) - 0.434983
+	Cd = (2.32726 * mach_n) - 1.82862
 elif 1.05 <= mach_n < 1.4164:
-	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308
+	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308 + 0.2
 else:
-	Cd = 0.581068 * (mach_n ** -0.822537)
+	Cd = 0.581068 * (mach_n ** -0.822537) + 0.2
 g_load = abs(accel) / 9.81
 
 # Setting up second line
@@ -82,6 +86,7 @@ sum_force = thrust - weight - drag
 ac_fut = sum_force / mass_cur
 ac_avg = (accel + ac_fut) / 2
 velocity += (ac_avg * t_step)
+vel_lst.append(velocity)
 altitude += (velocity * t_step) + (0.5 * ac_avg * t_step * t_step)
 alt_lst.append(altitude)
 accel = ac_fut
@@ -95,6 +100,7 @@ else:
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
+mach_lst.append(mach_n)
 if mach_n < 0.01137:
 	Cd = 0.385
 elif 0.01137 <= mach_n < 0.3374:
@@ -102,18 +108,20 @@ elif 0.01137 <= mach_n < 0.3374:
 elif 0.3374 <= mach_n < 0.9183:
 	Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
 elif 0.9183 <= mach_n < 1.05:
-	Cd = (0.809643 * mach_n) - 0.434983
+	Cd = (2.32726 * mach_n) - 1.82862
 elif 1.05 <= mach_n < 1.4164:
-	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308
+	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308 + 0.2
 else:
-	Cd = 0.581068 * (mach_n ** -0.822537)
+	Cd = 0.581068 * (mach_n ** -0.822537) + 0.2
 g_load = abs(accel) / 9.81
 
 # Main loop, lines 3 and beyond
 while True:
 	line += 1
-	if line >= 1400:
-		line = 1400
+	# Set "1516" to the last line of data in thrust.txt minus one
+	# i.e. the last line of data in our thrust.txt is 1517, so we use 1516 here
+	if line >= 1516:
+		line = 1516
 	t_cur += t_step
 	if abs(velocity) / velocity == -1 and altitude <= dply_main:
 		drag = (0.5 * cht_cd * area_main * air_den * velocity * abs(velocity))
@@ -138,6 +146,7 @@ while True:
 	ac_fut = sum_force / mass_cur
 	ac_avg = (accel + ac_fut) / 2
 	velocity += (ac_avg * t_step)
+	vel_lst.append(velocity)
 	altitude += (velocity * t_step) + (0.5 * ac_avg * t_step * t_step)
 	alt_lst.append(altitude)
 	accel = ac_fut
@@ -151,6 +160,7 @@ while True:
 	air_den = air_pres / (0.2869 * (air_temp + 273.1))
 	spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 	mach_n = abs(velocity / spd_snd)
+	mach_lst.append(mach_n)
 	if mach_n < 0.01137:
 		Cd = 0.385
 	elif 0.01137 <= mach_n < 0.3374:
@@ -158,14 +168,18 @@ while True:
 	elif 0.3374 <= mach_n < 0.9183:
 		Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
 	elif 0.9183 <= mach_n < 1.05:
-		Cd = (0.809643 * mach_n) - 0.434983
+		Cd = (2.32726 * mach_n) - 1.82862
 	elif 1.05 <= mach_n < 1.4164:
-		Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308
+		Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308 + 0.2
 	else:
-		Cd = 0.581068 * (mach_n ** -0.822537)
+		Cd = 0.581068 * (mach_n ** -0.822537) + 0.2
 	g_load = abs(accel) / 9.81
 	if velocity < 0:
 		alt_lst.sort()
+		vel_lst.sort()
+		mach_lst.sort()
 		print("Max altitude: " + str(round(alt_lst[-1], 3)) + " m")
+		print("Max velocity: " + str(round(vel_lst[-1], 3)) + " m/s")
+		print("Max mach: " + str(round(mach_lst[-1], 3)))
 		print("Simulation complete.")
 		exit(0)
