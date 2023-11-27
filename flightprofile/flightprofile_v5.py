@@ -8,17 +8,17 @@ import math
 print("Loading...")
 
 # Setting up initials
-coef_drag = 0.373
-cs_area = 0.0366
-mass_dry = 54.638
-area_reef = 0.7974732057
-area_main = 15.10334678
-cht_cd = 2.2
-dply_main = 400
-lnch_alt = 1219
-hgt_rail = 13.1064
-temp_init = 34
-t_step = 0.01
+coef_drag = 0.373  # coef
+cs_area = 0.0366  # m^2
+mass_dry = 54.638  # kg
+area_reef = 0.7974732057  # m^2
+area_main = 15.10334678  # m^2
+cht_cd = 2.2  # coef
+dply_main = 400  # m
+lnch_alt = 1219  # m
+hgt_rail = 13.1064  # m
+temp_init = 34  # C
+t_step = 0.01  # s
 alt_lst = []
 vel_lst = []
 mach_lst = []
