@@ -1,5 +1,5 @@
 # Flight Profile of a Rocket
-# FP v5
+# FP v6
 
 # Importing necessary libraries
 import math
@@ -8,17 +8,17 @@ import math
 print("Loading...")
 
 # Setting up initials
-coef_drag = 0.373  # coef
-cs_area = 0.0366  # m^2
-mass_dry = 54.638  # kg
-area_reef = 0.7974732057  # m^2
-area_main = 15.10334678  # m^2
-cht_cd = 2.2  # coef
-dply_main = 400  # m
-lnch_alt = 1219  # m
-hgt_rail = 13.1064  # m
-temp_init = 34  # C
-t_step = 0.01  # s
+coef_drag = 0.373
+cs_area = 0.0366
+mass_dry = 54.638
+area_reef = 0.7974732057
+area_main = 15.10334678
+cht_cd = 2.2
+dply_main = 400
+lnch_alt = 1219
+hgt_rail = 13.1064
+temp_init = 34
+t_step = 0.01
 alt_lst = []
 vel_lst = []
 mach_lst = []
@@ -54,18 +54,20 @@ air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
 mach_lst.append(mach_n)
-if mach_n < 0.01137:
-	Cd = 0.385
-elif 0.01137 <= mach_n < 0.3374:
-	Cd = 0.282383 * (mach_n ** -0.0692443)
-elif 0.3374 <= mach_n < 0.9183:
-	Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
-elif 0.9183 <= mach_n < 1.05:
-	Cd = (2.32726 * mach_n) - 1.82862
-elif 1.05 <= mach_n < 1.4164:
-	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308 + 0.2
+if mach_n <= 0.019892:
+	Cd = (-0.25 * mach_n) + 0.6
+elif 0.019892 < mach_n <= 0.08:
+	Cd = (7.61905 * (mach_n ** 2)) - (1.65476 * mach_n) + 0.624929
+elif 0.08 < mach_n <= 0.13:
+	Cd = (-0.042 * mach_n) + 0.54466
+elif 0.13 < mach_n <= 0.9129:
+	Cd = 0.494437 * (mach_n ** -0.0424974)
+elif 0.9129 < mach_n <= 1.0499712:
+	Cd = (2.09956 * mach_n) - 1.42042
+elif 1.0499712 < mach_n <= 1.4379:
+	Cd = (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
 else:
-	Cd = 0.581068 * (mach_n ** -0.822537) + 0.2
+	Cd = 0.951585 * (mach_n ** -0.456674)
 g_load = abs(accel) / 9.81
 
 # Setting up second line
@@ -101,18 +103,20 @@ air_den = air_pres / (0.2869 * (air_temp + 273.1))
 spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 mach_n = abs(velocity / spd_snd)
 mach_lst.append(mach_n)
-if mach_n < 0.01137:
-	Cd = 0.385
-elif 0.01137 <= mach_n < 0.3374:
-	Cd = 0.282383 * (mach_n ** -0.0692443)
-elif 0.3374 <= mach_n < 0.9183:
-	Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
-elif 0.9183 <= mach_n < 1.05:
-	Cd = (2.32726 * mach_n) - 1.82862
-elif 1.05 <= mach_n < 1.4164:
-	Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308 + 0.2
+if mach_n <= 0.019892:
+	Cd = (-0.25 * mach_n) + 0.6
+elif 0.019892 < mach_n <= 0.08:
+	Cd = (7.61905 * (mach_n ** 2)) - (1.65476 * mach_n) + 0.624929
+elif 0.08 < mach_n <= 0.13:
+	Cd = (-0.042 * mach_n) + 0.54466
+elif 0.13 < mach_n <= 0.9129:
+	Cd = 0.494437 * (mach_n ** -0.0424974)
+elif 0.9129 < mach_n <= 1.0499712:
+	Cd = (2.09956 * mach_n) - 1.42042
+elif 1.0499712 < mach_n <= 1.4379:
+	Cd = (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
 else:
-	Cd = 0.581068 * (mach_n ** -0.822537) + 0.2
+	Cd = 0.951585 * (mach_n ** -0.456674)
 g_load = abs(accel) / 9.81
 
 # Main loop, lines 3 and beyond
@@ -161,18 +165,20 @@ while True:
 	spd_snd = 331.3 * math.sqrt(1 + (air_temp / 273.15))
 	mach_n = abs(velocity / spd_snd)
 	mach_lst.append(mach_n)
-	if mach_n < 0.01137:
-		Cd = 0.385
-	elif 0.01137 <= mach_n < 0.3374:
-		Cd = 0.282383 * (mach_n ** -0.0692443)
-	elif 0.3374 <= mach_n < 0.9183:
-		Cd = (0.174432 * (mach_n ** 2)) - (0.21206 * mach_n) + 0.35614
-	elif 0.9183 <= mach_n < 1.05:
-		Cd = (2.32726 * mach_n) - 1.82862
-	elif 1.05 <= mach_n < 1.4164:
-		Cd = (0.423336 * (mach_n ** 2)) - (0.985742 * mach_n) + 0.983308 + 0.2
+	if mach_n <= 0.019892:
+		Cd = (-0.25 * mach_n) + 0.6
+	elif 0.019892 < mach_n <= 0.08:
+		Cd = (7.61905 * (mach_n ** 2)) - (1.65476 * mach_n) + 0.624929
+	elif 0.08 < mach_n <= 0.13:
+		Cd = (-0.042 * mach_n) + 0.54466
+	elif 0.13 < mach_n <= 0.9129:
+		Cd = 0.494437 * (mach_n ** -0.0424974)
+	elif 0.9129 < mach_n <= 1.0499712:
+		Cd = (2.09956 * mach_n) - 1.42042
+	elif 1.0499712 < mach_n <= 1.4379:
+		Cd = (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
 	else:
-		Cd = 0.581068 * (mach_n ** -0.822537) + 0.2
+		Cd = 0.951585 * (mach_n ** -0.456674)
 	g_load = abs(accel) / 9.81
 	if velocity < 0:
 		alt_lst.sort()
