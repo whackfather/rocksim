@@ -6,8 +6,8 @@ from math import pi
 
 # Setting up initials
 t_step = 0.01  # s
-mass_ox = 52.07333124  # kg
-mass_fu = 15.8663  # kg
+mass_ox = 46.962  # kg
+mass_fu = 8.538  # kg
 p_tank = 5516000  # pa
 thrust_avg = 7000  # N
 rad_port = 0.063  # m
