@@ -8,9 +8,9 @@ import math
 print("Loading...")
 
 # Setting up initials
-coef_drag = 0.373
+coef_drag = 0.6
 cs_area = 0.0366
-mass_dry = 54.638
+mass_dry = 63.786
 area_reef = 0.7974732057
 area_main = 15.10334678
 cht_cd = 2.2
@@ -124,8 +124,8 @@ while True:
 	line += 1
 	# Set "1516" to the last line of data in thrust.txt minus one
 	# i.e. the last line of data in our thrust.txt is 1517, so we use 1516 here
-	if line >= 1516:
-		line = 1516
+	if line >= 1367:
+		line = 1367
 	t_cur += t_step
 	if abs(velocity) / velocity == -1 and altitude <= dply_main:
 		drag = (0.5 * cht_cd * area_main * air_den * velocity * abs(velocity))
