@@ -8,17 +8,16 @@ import math
 print("Loading...")
 
 # Setting up initials
-coef_drag = 0.6
-cs_area = 0.0366
-mass_dry = 63.786
-area_reef = 0.7974732057
-area_main = 15.10334678
-cht_cd = 2.2
-dply_main = 400
-lnch_alt = 1219
-hgt_rail = 13.1064
-temp_init = 34
-t_step = 0.01
+coef_drag = 0.6  # coef
+cs_area = 0.0366  # m^2
+mass_dry = 63.786  # kg
+area_reef = 0.7974732057  # m^2
+area_main = 15.10334678  # m^2
+cht_cd = 2.2  # coef
+dply_main = 400  # m
+lnch_alt = 1219  # m
+temp_init = 34  # C
+t_step = 0.01  # s
 alt_lst = []
 vel_lst = []
 mach_lst = []
@@ -122,8 +121,8 @@ g_load = abs(accel) / 9.81
 # Main loop, lines 3 and beyond
 while True:
 	line += 1
-	# Set "1516" to the last line of data in thrust.txt minus one
-	# i.e. the last line of data in our thrust.txt is 1517, so we use 1516 here
+	# Set the line number to the last line of data in thrust.txt minus one
+	# i.e. if the last line of data in thrust.txt is 1517, use 1516 here
 	if line >= 1367:
 		line = 1367
 	t_cur += t_step
