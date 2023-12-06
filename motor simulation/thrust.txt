@@ -1,6 +1,6 @@
-EXAMPLE of simulated thrust over time. These numbers are from the current version of motormathmodel_v3.py.
+EXAMPLE of simulated thrust over time. These numbers are from a previous version of motormathmodel.py.
 All values are in newtons and are iterated for every 0.01 seconds of flight for the duration of the motor burn.
-This file is ~1400 lines long. Don't scroll to the end, it'll be a waste of your time.
+FYI, this file is very very long.
 7000.10643851872
 7000.301703089481
 7000.361393029892
