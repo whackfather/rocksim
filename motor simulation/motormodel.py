@@ -4,22 +4,28 @@
 # Importing necessary libraries
 from math import pi
 
+# Fluff
+print("Firing test motor...")
+
 # Setting up initials
-t_step = 0.01
-mass_ox = 70 * (6.5 / 7.5)
-mass_fu = mass_ox / 6.5
-pres_tank = 5516000
-avg_thrust = 5374.17
-rad_port = 0.063
-area_port = pi * (rad_port ** 2)
-isp = 180
-grav = 9.81
-mdot_ox = (avg_thrust / (isp * grav)) / (1 + (1 / 6.5))
-a = 0.417
-n = 0.347
-rho_fuel = (0.871 * 901) + (0.129 * 1220)
-vol_grain = mass_fu / rho_fuel
-hgt_grain = vol_grain / (pi * (rad_port ** 2))
+t_step = 0.01  # s
+rad_liner = 6.98 / (2 * 39.37)  # m
+mass_ox = 70 * (6.5 / 7.5)  # kg
+mass_fu = mass_ox / 6.5  # kg
+pres_tank = 5516000  # pa
+avg_thrust = 5374.173913043480  # N
+rad_port = 0.0544  # m
+area_port = pi * (rad_port ** 2)  # m^2
+isp = 200  # s
+grav = 9.81  # m/s^2
+eta_c = 0.95  # coef
+eta_n = 0.95  # coef
+mdot_ox = (avg_thrust / (isp * grav * eta_c * eta_n)) / (1 + (1 / 6.5))  # kg/s
+a = 0.417  # const
+n = 0.347  # const
+rho_fuel = (0.871 * 901) + (0.129 * 1220)  # kg/m^3
+vol_grain = mass_fu / rho_fuel  # m^3
+hgt_grain = vol_grain / ((pi * (rad_liner ** 2)) - (pi * (rad_port ** 2)))  # m
 
 # Setting up variables
 t_cur = 0
@@ -36,7 +42,7 @@ fuel_mass = mass_fu - (fuel_mdot * t_cur)
 ox_mass = mass_ox - (mdot_ox * t_cur)
 prop_mass = fuel_mass + ox_mass
 if t_cur < (mass_ox / mdot_ox):
-	thrust = (mdot_ox + fuel_mdot) * isp * grav
+	thrust = (mdot_ox + fuel_mdot) * isp * grav * eta_c * eta_n
 else:
 	thrust = 0
 
@@ -72,7 +78,7 @@ while True:
 		ox_mass = mass_ox - (mdot_ox * t_cur)
 	prop_mass = fuel_mass + ox_mass
 	if t_cur < (mass_ox / mdot_ox):
-		thrust = (mdot_ox + fuel_mdot) * isp * grav
+		thrust = (mdot_ox + fuel_mdot) * isp * grav * eta_c * eta_n
 	else:
 		thrust = 0
 	f = open("thrust.txt", "a")
