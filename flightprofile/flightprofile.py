@@ -16,6 +16,9 @@ t_step = 0.01  # s
 cs_area = 0.0366  # m^2
 hgt_init = 1219.2  # m
 alt_lst = []
+vel_lst = []
+acc_lst = []
+den_lst = []
 
 # Setting up variables
 line = 0
@@ -23,6 +26,7 @@ t_cur = 0
 altitude = 0
 alt_lst.append(altitude)
 velocity = 0
+vel_lst.append(velocity)
 drag = 0
 f = open("propmass.txt")
 propcont = f.readlines()
@@ -36,6 +40,7 @@ thrust = float(thrucont[line])
 f.close()
 sum_force = thrust - weight - drag
 accel = sum_force / mass_cur
+acc_lst.append(accel)
 hgt_asl = hgt_init + altitude
 if hgt_asl < 11000:
 	air_temp = 26.85 + (15.01 - (0.00649 * hgt_asl))
@@ -44,6 +49,7 @@ else:
 	air_temp = 26.85 - 56.46
 	air_pres = 22.65 ** (1.73 - (0.000157 * hgt_asl))
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
+den_lst.append(air_den)
 spd_snd = math.sqrt((1.4 * 8.3145 * (air_temp + 273.15) / 0.028964))
 mach_n = abs(velocity / spd_snd)
 if mach_n <= 0.019892:
@@ -63,8 +69,8 @@ else:
 
 while True:
 	line += 1
-	if line >= 2301:
-		line = 2301
+	if line >= 2307:
+		line = 2307
 	t_cur += t_step
 	drag = (0.5 * Cd * cs_area * air_den * velocity * abs(velocity))
 	f = open("propmass.txt")
@@ -80,10 +86,14 @@ while True:
 	sum_force = thrust - weight - drag
 	ac_fut = sum_force / mass_cur
 	ac_avg = (accel + ac_fut) / 2
-	velocity += (ac_avg * t_step)
-	altitude += (velocity * t_step) + (0.5 * ac_avg * t_step * t_step)
+	vel_fut = velocity + (ac_avg * t_step)
+	vel_avg = (velocity + vel_fut) / 2
+	altitude += (vel_avg * t_step)
 	alt_lst.append(altitude)
+	velocity = vel_fut
+	vel_lst.append(velocity)
 	accel = ac_fut
+	acc_lst.append(accel)
 	hgt_asl = hgt_init + altitude
 	if hgt_asl < 11000:
 		air_temp = 26.85 + (15.01 - (0.00649 * hgt_asl))
@@ -92,6 +102,7 @@ while True:
 		air_temp = 26.85 - 56.46
 		air_pres = 22.65 ** (1.73 - (0.000157 * hgt_asl))
 	air_den = air_pres / (0.2869 * (air_temp + 273.1))
+	den_lst.append(air_den)
 	spd_snd = math.sqrt((1.4 * 8.3145 * (air_temp + 273.15) / 0.028964))
 	mach_n = abs(velocity / spd_snd)
 	if mach_n <= 0.019892:
@@ -112,8 +123,12 @@ while True:
 		print("Finalizing data...")
 		sleep(2)
 		alt_lst.sort()
+		vel_lst.sort()
+		acc_lst.sort()
+		den_lst.sort()
 		print("Max altitude: " + str(round(alt_lst[-1], 3)) + " m")
-		sleep(0.5)
+		print("Max velocity: " + str(round(vel_lst[-1], 3)) + " m/s")
+		print("Max acceleration: " + str(round(acc_lst[-1], 3)) + " m/s^2")
+		print("Max air density: " + str(round(den_lst[-1], 3)) + " kg/m^3")
 		print("Simulation complete.")
-		sleep(0.2)
 		exit(0)
