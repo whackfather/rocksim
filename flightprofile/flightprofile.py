@@ -100,7 +100,7 @@ while True:
 		air_pres = 101.29 * (((air_temp + 273.15) / 288.08) ** 5.256)
 	else:
 		air_temp = 26.85 - 56.46
-		air_pres = 22.65 ** (1.73 - (0.000157 * hgt_asl))
+		air_pres = 22.65 * (math.e ** (1.73 - (0.000157 * hgt_asl)))
 	air_den = air_pres / (0.2869 * (air_temp + 273.1))
 	den_lst.append(air_den)
 	spd_snd = math.sqrt((1.4 * 8.3145 * (air_temp + 273.15) / 0.028964))
@@ -130,5 +130,4 @@ while True:
 		print("Max velocity: " + str(round(vel_lst[-1], 3)) + " m/s")
 		print("Max acceleration: " + str(round(acc_lst[-1], 3)) + " m/s^2")
 		print("Max air density: " + str(round(den_lst[-1], 3)) + " kg/m^3")
-		print("Simulation complete.")
 		exit(0)
