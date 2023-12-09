@@ -43,11 +43,11 @@ accel = sum_force / mass_cur
 acc_lst.append(accel)
 hgt_asl = hgt_init + altitude
 if hgt_asl < 11000:
-	air_temp = 26.85 + (15.01 - (0.00649 * hgt_asl))
+	air_temp = -0.0092485 * hgt_asl + (33.95 + 11.2734)
 	air_pres = 101.29 * (((air_temp + 273.15) / 288.08) ** 5.256)
 else:
-	air_temp = 26.85 - 56.46
-	air_pres = 22.65 ** (1.73 - (0.000157 * hgt_asl))
+	air_temp = -56.46
+	air_pres = 22.65 * (math.e ** (1.73 - (0.000157 * hgt_asl)))
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 den_lst.append(air_den)
 spd_snd = math.sqrt((1.4 * 8.3145 * (air_temp + 273.15) / 0.028964))
@@ -96,10 +96,10 @@ while True:
 	acc_lst.append(accel)
 	hgt_asl = hgt_init + altitude
 	if hgt_asl < 11000:
-		air_temp = 26.85 + (15.01 - (0.00649 * hgt_asl))
+		air_temp = -0.0092485 * hgt_asl + (33.95 + 11.2734)
 		air_pres = 101.29 * (((air_temp + 273.15) / 288.08) ** 5.256)
 	else:
-		air_temp = 26.85 - 56.46
+		air_temp = -56.46
 		air_pres = 22.65 * (math.e ** (1.73 - (0.000157 * hgt_asl)))
 	air_den = air_pres / (0.2869 * (air_temp + 273.1))
 	den_lst.append(air_den)
@@ -121,13 +121,11 @@ while True:
 		Cd = 0.951585 * (mach_n ** -0.456674)
 	if velocity < 0:
 		print("Finalizing data...")
-		sleep(2)
 		alt_lst.sort()
 		vel_lst.sort()
 		acc_lst.sort()
-		den_lst.sort()
+		sleep(2)
 		print("Max altitude: " + str(round(alt_lst[-1], 3)) + " m")
 		print("Max velocity: " + str(round(vel_lst[-1], 3)) + " m/s")
 		print("Max acceleration: " + str(round(acc_lst[-1], 3)) + " m/s^2")
-		print("Max air density: " + str(round(den_lst[-1], 3)) + " kg/m^3")
 		exit(0)
