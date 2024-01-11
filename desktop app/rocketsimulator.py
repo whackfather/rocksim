@@ -1,5 +1,5 @@
 # Rocket Simulator Application
-# v0.1
+# v1.0
 
 # Importing necessary libraries
 from tkinter import *
@@ -8,51 +8,75 @@ from math import *
 # Setting up tkinter window
 root = Tk()
 root.title("Rocket Simulator")
-root.geometry("425x365")
+root.geometry("475x315")
+root.configure(background="#404040")
 
 # Taking input through tkinter window
-title1 = Label(root, text="Enter time step (s)")
+title1 = Label(root, text="Enter time step (s)", fg="white", bg="#404040")
 title1.grid(row=0, column=0)
-e_tstep = Entry(root, width=35, borderwidth=3)
+e_tstep = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_tstep.grid(row=1, column=0, padx=10)
 
-title2 = Label(root, text="Enter total propellant mass (kg)")
+title2 = Label(root, text="Enter total propellant mass (kg)", fg="white", bg="#404040")
 title2.grid(row=2, column=0)
-e_propmass = Entry(root, width=35, borderwidth=3)
+e_propmass = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_propmass.grid(row=3, column=0, padx=10)
 
-title3 = Label(root, text="Enter dry mass (kg)")
+title3 = Label(root, text="Enter dry mass (kg)", fg="white", bg="#404040")
 title3.grid(row=4, column=0)
-e_drymass = Entry(root, width=35, borderwidth=3)
+e_drymass = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_drymass.grid(row=5, column=0, padx=10)
 
-title4 = Label(root, text="Enter OF ratio")
+title4 = Label(root, text="Enter OF ratio", fg="white", bg="#404040")
 title4.grid(row=6, column=0)
-e_ofratio = Entry(root, width=35, borderwidth=3)
+e_ofratio = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_ofratio.grid(row=7, column=0, padx=10)
 
-title5 = Label(root, text="Enter max precision average thrust (N)")
+title5 = Label(root, text="Enter average thrust (N)", fg="white", bg="#404040")
 title5.grid(row=8, column=0)
-e_avgthru = Entry(root, width=35, borderwidth=3)
+e_avgthru = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_avgthru.grid(row=9, column=0, padx=10)
 
-title6 = Label(root, text="Enter port radius (m)")
+title6 = Label(root, text="Enter port radius (m)", fg="white", bg="#404040")
 title6.grid(row=10, column=0)
-e_radport = Entry(root, width=35, borderwidth=3)
+e_radport = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_radport.grid(row=11, column=0, padx=10)
 
-title7 = Label(root, text="Enter rocket cross-section (m^2)")
+title7 = Label(root, text="Enter rocket cross-section (m^2)", fg="white", bg="#404040")
 title7.grid(row=12, column=0)
-e_csarea = Entry(root, width=35, borderwidth=3)
+e_csarea = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_csarea.grid(row=13, column=0, padx=10)
 
-title8 = Label(root, text="Enter initial height ASL (m)")
+title8 = Label(root, text="Enter initial height ASL (m)", fg="white", bg="#404040")
 title8.grid(row=14, column=0)
-e_hgtasl = Entry(root, width=35, borderwidth=3)
+e_hgtasl = Entry(root, width=35, borderwidth=0, fg="white", bg="#636363")
 e_hgtasl.grid(row=15, column=0, padx=10)
 
 
+def clear():
+    lst = root.place_slaves()
+    for i in lst:
+        i.destroy()
+
+
 def rocksim():
+    # Checking inputs
+    # noinspection PyBroadException
+    try:
+        float(e_tstep.get())
+        float(e_propmass.get())
+        float(e_drymass.get())
+        float(e_ofratio.get())
+        float(e_avgthru.get())
+        float(e_radport.get())
+        float(e_csarea.get())
+        float(e_hgtasl.get())
+    except:
+        Label(root, text="At least one field is invalid.", fg="red", bg="#404040").place(x=350, y=140, anchor="center")
+        return None
+    clear()
+    Button(root, text="Launch rocket!", command=rocksim, fg="white", bg="#636363", borderwidth=0).place(x=350, y=30, anchor="center")
+
     # Motor Simulation
 
     # Setting up initials
@@ -125,7 +149,6 @@ def rocksim():
         thrust_txt.append(thrust)
         propmass_txt.append(prop_mass)
         if t_cur > mass_ox / mdot_ox:
-            print("Motor simulation complete.")
             break
 
     # Rocket Simulation
@@ -227,18 +250,20 @@ def rocksim():
         else:
             Cd = 0.951585 * (mach_n ** -0.456674)
         if velocity < 0:
-            print("Finalizing data...")
             alt_lst.sort()
             vel_lst.sort()
             acc_lst.sort()
-            Label(root, text="Max altitude: " + str(round(alt_lst[-1], 3)) + " m").grid(row=2, column=1)
-            Label(root, text="Max velocity: " + str(round(vel_lst[-1], 3)) + " m/s").grid(row=3, column=1)
-            Label(root, text="Max acceleration: " + str(round(acc_lst[-1], 3)) + " m/s^2").grid(row=4, column=1)
+            alt_lbl = Label(root, text="Max altitude: " + str(round(alt_lst[-1], 3)) + " m", fg="white", bg="#404040")
+            alt_lbl.place(x=350, y=60, anchor="center")
+            vel_lbl = Label(root, text="Max velocity: " + str(round(vel_lst[-1], 3)) + " m/s", fg="white", bg="#404040")
+            vel_lbl.place(x=350, y=80, anchor="center")
+            acc_lbl = Label(root, text="Max acceleration: " + str(round(acc_lst[-1], 3)) + " m/s^2", fg="white", bg="#404040")
+            acc_lbl.place(x=350, y=100, anchor="center")
             break
 
 
 # The button
-Button(root, text="Blow up civilians!", command=rocksim).grid(row=1, column=1, padx=30)
+Button(root, text="Launch rocket!", command=rocksim, fg="white", bg="#636363", borderwidth=0).place(x=350, y=30, anchor="center")
 
 # Displaying the tkinter window
 root.mainloop()
