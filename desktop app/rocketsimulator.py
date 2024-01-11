@@ -61,7 +61,6 @@ def clear():
 
 def rocksim():
     # Checking inputs
-    # noinspection PyBroadException
     try:
         float(e_tstep.get())
         float(e_propmass.get())
