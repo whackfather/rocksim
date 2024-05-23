@@ -1,5 +1,6 @@
 # Rocket Simulator Application
 # v1.0
+# Written by Roman Rodriguez
 
 # Importing necessary libraries
 from tkinter import *
