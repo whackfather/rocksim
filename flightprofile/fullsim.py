@@ -179,7 +179,7 @@ while True:
         Cd = (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
     else:
         Cd = 0.951585 * (mach_n ** -0.456674)
-    if velocity < 0:
+    if velocity < 0:    # Stopping condition (currently when rocket reaches apogee to save on computing time for descent)
         print("Finalizing data...")
         alt_lst.sort()
         vel_lst.sort()
