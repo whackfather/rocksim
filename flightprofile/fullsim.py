@@ -132,6 +132,7 @@ elif 1.0499712 < mach_n <= 1.4379:
 else:
     Cd = 0.951585 * (mach_n ** -0.456674)
 
+# Main loop
 while True:
     line += 1
     if line >= (len(thrust_txt) - 1):
