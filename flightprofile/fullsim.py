@@ -1,8 +1,38 @@
 # Rocket Simulator (No GUI)
-# v1.0
+# v2.0
+# Written by Roman Rodriguez
 
 # Importing necessary libraries
 from math import *
+
+# Functions
+def coefDrag(mach_n:float) -> float:
+    if mach_n <= 0.019892:
+        return (-0.25 * mach_n) + 0.6
+    elif 0.019892 < mach_n <= 0.08:
+        return (7.61905 * (mach_n ** 2)) - (1.65476 * mach_n) + 0.624929
+    elif 0.08 < mach_n <= 0.13:
+        return (-0.042 * mach_n) + 0.54466
+    elif 0.13 < mach_n <= 0.9129:
+        return 0.494437 * (mach_n ** -0.0424974)
+    elif 0.9129 < mach_n <= 1.0499712:
+        return (2.09956 * mach_n) - 1.42042
+    elif 1.0499712 < mach_n <= 1.4379:
+        return (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
+    else:
+        return 0.951585 * (mach_n ** -0.456674)
+
+def presAndTemp(hgtAsl:float, desVal:str) -> float:
+    if desVal == "temp":
+        if hgtAsl < 11000:
+            return -0.0092485 * hgt_asl + (33.95 + 11.2734)
+        else:
+            return -56.46
+    elif desVal == "pres":
+        if hgtAsl < 11000:
+            return 101.29 * (((air_temp + 273.15) / 288.08) ** 5.256)
+        else:
+            return 22.65 * (e ** (1.73 - (0.000157 * hgt_asl)))
 
 # Motor Simulation
 
@@ -107,30 +137,13 @@ sum_force = thrust - weight - drag
 accel = sum_force / mass_cur
 acc_lst.append(accel)
 hgt_asl = hgt_init + altitude
-if hgt_asl < 11000:
-    air_temp = -0.0092485 * hgt_asl + (33.95 + 11.2734)
-    air_pres = 101.29 * (((air_temp + 273.15) / 288.08) ** 5.256)
-else:
-    air_temp = -56.46
-    air_pres = 22.65 * (e ** (1.73 - (0.000157 * hgt_asl)))
+air_temp = presAndTemp(hgt_asl, "temp")
+air_pres = presAndTemp(hgt_asl, "pres")
 air_den = air_pres / (0.2869 * (air_temp + 273.1))
 den_lst.append(air_den)
 spd_snd = sqrt((1.4 * 8.3145 * (air_temp + 273.15) / 0.028964))
 mach_n = abs(velocity / spd_snd)
-if mach_n <= 0.019892:
-    Cd = (-0.25 * mach_n) + 0.6
-elif 0.019892 < mach_n <= 0.08:
-    Cd = (7.61905 * (mach_n ** 2)) - (1.65476 * mach_n) + 0.624929
-elif 0.08 < mach_n <= 0.13:
-    Cd = (-0.042 * mach_n) + 0.54466
-elif 0.13 < mach_n <= 0.9129:
-    Cd = 0.494437 * (mach_n ** -0.0424974)
-elif 0.9129 < mach_n <= 1.0499712:
-    Cd = (2.09956 * mach_n) - 1.42042
-elif 1.0499712 < mach_n <= 1.4379:
-    Cd = (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
-else:
-    Cd = 0.951585 * (mach_n ** -0.456674)
+Cd = coefDrag(mach_n)
 
 # Main loop
 while True:
@@ -155,30 +168,13 @@ while True:
     accel = ac_fut
     acc_lst.append(accel)
     hgt_asl = hgt_init + altitude
-    if hgt_asl < 11000:
-        air_temp = -0.0092485 * hgt_asl + (33.95 + 11.2734)
-        air_pres = 101.29 * (((air_temp + 273.15) / 288.08) ** 5.256)
-    else:
-        air_temp = -56.46
-        air_pres = 22.65 * (e ** (1.73 - (0.000157 * hgt_asl)))
+    air_temp = presAndTemp(hgt_asl, "temp")
+    air_pres = presAndTemp(hgt_asl, "pres")
     air_den = air_pres / (0.2869 * (air_temp + 273.1))
     den_lst.append(air_den)
     spd_snd = sqrt((1.4 * 8.3145 * (air_temp + 273.15) / 0.028964))
     mach_n = abs(velocity / spd_snd)
-    if mach_n <= 0.019892:
-        Cd = (-0.25 * mach_n) + 0.6
-    elif 0.019892 < mach_n <= 0.08:
-        Cd = (7.61905 * (mach_n ** 2)) - (1.65476 * mach_n) + 0.624929
-    elif 0.08 < mach_n <= 0.13:
-        Cd = (-0.042 * mach_n) + 0.54466
-    elif 0.13 < mach_n <= 0.9129:
-        Cd = 0.494437 * (mach_n ** -0.0424974)
-    elif 0.9129 < mach_n <= 1.0499712:
-        Cd = (2.09956 * mach_n) - 1.42042
-    elif 1.0499712 < mach_n <= 1.4379:
-        Cd = (0.54702 * (mach_n ** 2)) - (1.30393 * mach_n) + 1.55009
-    else:
-        Cd = 0.951585 * (mach_n ** -0.456674)
+    Cd = coefDrag(mach_n)
     if velocity < 0:    # Stopping condition (currently when rocket reaches apogee to save on computing time for descent)
         print("Finalizing data...")
         alt_lst.sort()
